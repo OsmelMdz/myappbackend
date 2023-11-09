@@ -75,7 +75,7 @@ class ProductController extends Controller
             'price' => 'numeric',
             'price_sale' => 'numeric',
             'stock' => 'numeric|nullable',
-            'expired' => 'date|nullable',
+            'expired' => 'nullable',
             'category_id' => 'numeric|nullable',
         ]);
         if ($validator->fails()) {
@@ -89,24 +89,11 @@ class ProductController extends Controller
             $rutaArchivoImg = $request->file('image')->store('public/imgproductos');
             $product->image = $rutaArchivoImg;
         }
-        // Ahora, se actualizan los otros campos independientemente de si se envía una imagen o no.
-        if ($request->has('name')) {
-            $product->name = $request->input('name');
-        }
-        if ($request->has('category_id')) {
-            $product->category_id = $request->input('category_id');
-        }
-        if ($request->has('price')) {
-            $product->price = $request->input('price');
-        }
-        if ($request->has('price_sale')) {
-            $product->price_sale = $request->input('price_sale');
-        }
-        if ($request->has('stock')) {
-            $product->stock = $request->input('stock');
-        }
-        if ($request->has('expired')) {
-            $product->expired = $request->input('expired');
+        $fieldsToUpdate = ['name', 'category_id', 'price', 'price_sale', 'stock', 'expired'];
+        foreach ($fieldsToUpdate as $field) {
+            if ($request->has($field)) {
+                $product->$field = $request->input($field);
+            }
         }
         $product->save();
         return response()->json(['message' => 'Producto actualizado con éxito'], 200);
