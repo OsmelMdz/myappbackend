@@ -16,7 +16,6 @@ return new class extends Migration
             $table->integer('amount');
             $table->float('total');
             $table->float('profit');
-            $table->time('hour');
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
             $table->timestamps();

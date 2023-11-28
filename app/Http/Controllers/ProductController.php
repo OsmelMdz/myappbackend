@@ -48,7 +48,6 @@ class ProductController extends Controller
             'image' => $rutaArchivoImg,
             'stock' => $request->stock,
             'expired' => $request->expired,
-
         ]);
 
         return response()->json(['producto' => $producto], 201);
@@ -97,5 +96,31 @@ class ProductController extends Controller
         }
         $product->save();
         return response()->json(['message' => 'Producto actualizado con éxito'], 200);
+    }
+
+
+    public function updateStock($id, Request $request)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+
+        $newStock = $request->input('stock');
+
+        $product->stock = $newStock;
+        $product->save();
+
+        return response()->json(['message' => 'Stock actualizado correctamente']);
+    }
+
+    public function getProductById($id)
+    {
+        $product = Product::find($id);
+        if (is_null($product)) {
+            return response()->json(['msn' => 'Product not found'], 404);
+        }
+        return response()->json($product, 200);
     }
 }
