@@ -46,4 +46,5 @@ Route::controller(SaleController::class)->group(function(){
     Route::delete('eliminarVenta/{id}', 'deleteSaleById');
     Route::post('actualizarVenta/{id}', 'updateSaleById');
     Route::post('vetaProducto/{id}', 'vetaProductById');
+    Route::get('productosmasvendidos','getProductosmasvendidos');
 });
